@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Switch, Redirect } from 'react-router-dom';
+
 import './App.css';
+
+import { NavConfig } from './config/nav-config';
+import routes from './config/routes';
+
+import { Not_Found } from './pages/not-found';
+import { NavigationBar } from './components/navbar';
+import {Footer} from './components/footer';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <NavigationBar />
+      <div className="App">
+        <Switch>
+          {NavConfig.map(({ path, component }, key) => (
+            <Route exact path={path} key={key} component={component} />
+          ))}
+          <Route exact path={routes.NOT_FOUND} component={Not_Found} />
+          <Redirect from="*" to={routes.NOT_FOUND} />
+        </Switch>
+      </div>
+      <Footer/>
+    </>
   );
 }
 
